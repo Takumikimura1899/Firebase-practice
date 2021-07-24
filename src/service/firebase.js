@@ -51,16 +51,6 @@ export const logOut = () => {
     });
 };
 
-// export const userIconGet = () => {
-//   firebase.auth().onAuthStateChanged((user) => {
-//     if (user) {
-//       const userIcon = user.photoURL;
-//       console.log(userIcon);
-//       return userIcon;
-//     }
-//   });
-// };
-
 // 外で使いたいので分かりやすい名前の定数に入れてexport constする。
 export const auth = firebase.auth();
 

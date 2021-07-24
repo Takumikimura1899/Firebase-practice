@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import firebase, { auth, signInWithGoogle, logOut } from '../service/firebase';
 import { AuthContext } from '../providers/AuthProvider';
+import { useHistory } from 'react-router-dom';
 
 const Header = () => {
   // 試しに初期化したfirebaseを出力するとオブジェクトで色々表示される
@@ -8,19 +9,27 @@ const Header = () => {
   const [userIcon, setUserIcon] = useState('');
   const [userName, setUserName] = useState('');
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      console.log(user);
-      const icon = user.photoURL;
-      const displayName = user.displayName;
-      console.log(icon);
-      setUserIcon(icon);
-      setUserName(displayName);
-    });
-  }, []);
+  const history = useHistory();
+  const logedOut = () => {
+    logOut();
+    history.push('/login');
+  };
 
   const currentUser = useContext(AuthContext);
   console.log(currentUser.currentUser);
+
+  useEffect(() => {
+    if (currentUser.currentUser) {
+      auth.onAuthStateChanged((user) => {
+        console.log(user);
+        const icon = user.photoURL;
+        const displayName = user.displayName;
+        console.log(icon);
+        setUserIcon(icon);
+        setUserName(displayName);
+      });
+    }
+  }, [currentUser]);
 
   const buttonRender = () => {
     let buttonDom;
@@ -28,7 +37,7 @@ const Header = () => {
       // setUserIcon(currentUser.currentUser.photoURL);
       buttonDom = (
         <>
-          <button onClick={logOut}>ログアウト</button>
+          <button onClick={logedOut}>ログアウト</button>
           <br />
           <img src={userIcon} alt='' />
           <br />
@@ -43,7 +52,6 @@ const Header = () => {
 
   return (
     <div>
-      ヘッダー
       {/* ボタンを押した時にグーグルにサインインする関数が走る */}
       {buttonRender()}
     </div>
