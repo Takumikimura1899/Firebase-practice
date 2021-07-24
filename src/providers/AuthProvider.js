@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   //   ログインユーザーが変わったタイミング初回のみ走る
   useEffect(() => {
     auth.onAuthStateChanged(setCurrentUser);
+    console.log('hello');
   }, []);
 
   return (

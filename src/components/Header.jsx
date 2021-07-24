@@ -1,16 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
-import firebase, { auth, signInWithGoogle, logOut } from '../service/firebase';
+import { auth, signInWithGoogle, logOut } from '../service/firebase';
 import { AuthContext } from '../providers/AuthProvider';
 import { useHistory } from 'react-router-dom';
 
 const Header = () => {
-  // 試しに初期化したfirebaseを出力するとオブジェクトで色々表示される
-  // console.log(firebase);
   const [userIcon, setUserIcon] = useState('');
   const [userName, setUserName] = useState('');
 
   const history = useHistory();
-  const logedOut = () => {
+  const handleLogOut = () => {
     logOut();
     history.push('/login');
   };
@@ -27,6 +25,7 @@ const Header = () => {
         console.log(icon);
         setUserIcon(icon);
         setUserName(displayName);
+        console.log('hello');
       });
     }
   }, [currentUser]);
@@ -37,7 +36,7 @@ const Header = () => {
       // setUserIcon(currentUser.currentUser.photoURL);
       buttonDom = (
         <>
-          <button onClick={logedOut}>ログアウト</button>
+          <button onClick={handleLogOut}>ログアウト</button>
           <br />
           <img src={userIcon} alt='' />
           <br />
